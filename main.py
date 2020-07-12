@@ -1,11 +1,11 @@
 from PIL import Image,ImageDraw
 import pandas as pd
 from colorPicker import colorPicker
+from linkTables import *
+
 coord = pd.read_excel('coord.xlsx')
 simData = pd.read_excel('simulation_results/Guardrail_injury_analysis.xlsx', sheet_name=0, header=None, names=['Name', 'Fill', 'Prob'])
 
-#coord = coord.set_index("BodyPart")
-#simData = simData.set_index("Name")
 numrows = simData.shape[0]
 
 case = 0
@@ -22,30 +22,10 @@ else:
     exit(1)
 
 
-def typo(bodypart):
-    if bodypart == 'Head':
-        one = simData[simData.Name.str.contains('(?:HIC36|BrIC MPS) \(AIS 2\+\)')]
-        if one.iloc[0].Prob > one.iloc[1].Prob:
-            bleh = one.iloc[0].Name
-        else:
-            bleh = one.iloc[1].Name
-    else:
-        foundAny = simData.Name.str.contains(bodypart)
-        if not foundAny.any():
-            return "Not Found"
-        bleh = simData[foundAny].iloc[0].Name
-    return bleh
+coord['NewName'] = coord.apply(getName,axis=1,args=(simData,))
+coord['Prob'] = coord.apply(getProb,axis=1,args=(simData,))
 
-def typo2(bodypart):
-    if bodypart == 'Not Found':
-        return -1
-    else:
-        return simData[simData.Name == bodypart].iloc[0].Prob * 100
-
-
-coord.insert(len(coord.columns),'NewName',coord.BodyPart.map(typo))
-coord.insert(len(coord.columns),'Prob',coord.loc[:,'NewName'].map(typo2))
-coord.insert(len(coord.columns),'Color',coord.loc[:,'Prob'].map(colorPicker))
+#coord['Color'] = coord.loc[:, 'Prob'].map(colorPicker)
 
 print(coord)
 
