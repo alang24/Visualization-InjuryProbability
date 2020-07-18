@@ -1,17 +1,34 @@
-def getName(row,simData):
+
+def chooseFromTwo(twoT):
+    if twoT.iloc[0].Prob > twoT.iloc[1].Prob:
+        return twoT.iloc[0].Name
+    else:
+        return twoT.iloc[1].Name
+
+def getName(row, simData, case):
     bodypart = row['BodyPart']
+
     if bodypart == 'Head':
         one = simData[simData.Name.str.contains('(?:HIC36|BrIC MPS) \(AIS 2\+\)')]
-        if one.iloc[0].Prob > one.iloc[1].Prob:
-            bleh = one.iloc[0].Name
-        else:
-            bleh = one.iloc[1].Name
+        newname = chooseFromTwo(one)
+    elif bodypart == 'Thorax' and case >= 2:
+        one = simData[simData.Name.str.contains('Thorax (?:Rmax|PCA) \(AIS 3\+\)')]
+        newname = chooseFromTwo(one)
+
+    elif bodypart == 'Tibia Right' and case < 4:
+        one = simData[simData.Name.str.contains('Tibia (?:RTI|Proximal) Right \(AIS 2\+\)')]
+        newname = chooseFromTwo(one)
+
+    elif bodypart == 'Tibia Left' and case < 4:
+        one = simData[simData.Name.str.contains('Tibia (?:RTI|Proximal) Left \(AIS 2\+\)')]
+        newname = chooseFromTwo(one)
+
     else:
         foundAny = simData.Name.str.contains(bodypart)
         if not foundAny.any():
             return "Not Found"
-        bleh = simData[foundAny].iloc[0].Name
-    return bleh
+        newname = simData[foundAny].iloc[0].Name
+    return newname
 
 
 def getProb(row,simData):

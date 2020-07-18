@@ -1,10 +1,13 @@
 from PIL import Image,ImageDraw
 import pandas as pd
-from colorPicker import colorPicker
+from colorPicker import *
 from linkTables import *
+from drawShapes import *
 
-coord = pd.read_excel('coord.xlsx')
-simData = pd.read_excel('simulation_results/Guardrail_injury_analysis.xlsx', sheet_name=0, header=None, names=['Name', 'Fill', 'Prob'])
+coordCirc = pd.read_excel('coord.xlsx',sheet_name=0)
+coordEll = pd.read_excel('coord.xlsx',sheet_name=1)
+
+simData = pd.read_excel('simulation_results/Guardrail_injury_analysis.xlsx', sheet_name=1, header=None, names=['Name', 'Fill', 'Prob'])
 
 numrows = simData.shape[0]
 
@@ -22,14 +25,21 @@ else:
     exit(1)
 
 
-coord['NewName'] = coord.apply(getName,axis=1,args=(simData,))
-coord['Prob'] = coord.apply(getProb,axis=1,args=(simData,))
+coordCirc['NewName'] = coordCirc.apply(getName, axis=1, args=(simData,case))
+coordCirc['Prob'] = coordCirc.apply(getProb, axis=1, args=(simData,))
+#coordCirc['Color'] = coordCirc.apply(colorPicker, axis=1)
 
-#coord['Color'] = coord.loc[:, 'Prob'].map(colorPicker)
+coordEll['NewName'] = coordEll.apply(getName, axis=1, args=(simData,case))
+coordEll['Prob'] = coordEll.apply(getProb, axis=1, args=(simData,))
+#coordEll['Color'] = coordEll.apply(colorPicker, axis=1)
 
-print(coord)
+print(coordCirc)
+print(coordEll)
 
-#im = Image.open('ciss_human_driver_legend_CAB.jpg')
-
-#im.save('pepega.jpg')
+#
+# with Image.open('ciss_human_driver_legend_CAB.jpg') as im:
+#     drawer = ImageDraw.Draw(im)
+#     coordCirc.apply(drawCircle,axis=1,args=(drawer,))
+#     coordEll.apply(drawEllipse,axis=1,args=(drawer,))
+#     im.save('pepega.jpg')
 
