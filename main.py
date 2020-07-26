@@ -45,9 +45,9 @@ def makeImage(simulname,index):
 
         drawTop5(topFive, drawer)
         drawTitle(simulname,index,'Driver',im.size,drawer)
-        im.save(simulname+'_'+str(index+1)+'Driver'+'.jpg')
+        im.save(simulname+'_'+str(index+1)+'_'+'Driver'+'.jpg')
     return
 
 
 simulname = "Guardrail"
-makeImage(simulname, 8)
+makeImage(simulname, 2)

@@ -17,7 +17,7 @@ def colorPicker(row):
         rgb = (255, 190, 0)
     # Orange
     elif 40 <= prob < 50:
-        rgb = (255, 255/2, 0)
+        rgb = (255, 255//2, 0)
     # red
     elif 50 <= prob <= 100:
         rgb = (255, 0, 0)

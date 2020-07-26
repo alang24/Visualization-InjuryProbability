@@ -3,8 +3,10 @@ import math
 from PIL import ImageFont
 
 def drawCircle(row, drawer):
+
     center = (row['X'],row['Y'])
     r = row['R']
+
     color = row['Color']
 
     box = (center[0] - r, center[1] - r, center[0] + r, center[1] + r)
@@ -46,10 +48,10 @@ def drawTop5(top5, drawer):
 
 
 def drawTitle(name,index,person,size, drawer):
-    fnt = ImageFont.truetype('fonts/Roboto-Regular.ttf', 18)
+    fnt = ImageFont.truetype('fonts/Roboto-Regular.ttf', 30)
 
     title = name + ' ' + str(index) + '\n' + person
 
-    drawer.multiline_text((size[0] - 20, 20), title, font=fnt, fill=(0, 0, 0))
+    drawer.multiline_text((size[0] - 200, 20), title, font=fnt, fill=(0, 0, 0))
 
     return
