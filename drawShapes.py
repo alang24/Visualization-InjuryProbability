@@ -2,6 +2,7 @@ import numpy as np
 import math
 from PIL import ImageFont
 
+
 def drawCircle(row, drawer):
 
     center = (row['X'],row['Y'])
@@ -47,11 +48,20 @@ def drawTop5(top5, drawer):
     return
 
 
-def drawTitle(name,index,person,size, drawer):
-    fnt = ImageFont.truetype('fonts/Roboto-Regular.ttf', 30)
+def drawTitle(name, index, person, size, drawer, twocars, carNum):
+    fnt = ImageFont.truetype('fonts/Roboto-Regular.ttf', 36)
+    W,H = size
+    title1 = name + ' ' + index
+    w1,h1= drawer.textsize(title1, font=fnt)
 
-    title = name + ' ' + str(index) + '\n' + person
+    if twocars:
+        title2 = person + ' Car #' + carNum
+    else:
+        title2 = person
 
-    drawer.multiline_text((size[0] - 200, 20), title, font=fnt, fill=(0, 0, 0))
+    w2,h2= drawer.textsize(title2, font=fnt)
+
+    drawer.text((W - w1 - 20, 20), title1, font=fnt, fill=(0, 0, 0))
+    drawer.text((W - w2 - 20, 80), title2, font=fnt, fill=(0, 0, 0))
 
     return
