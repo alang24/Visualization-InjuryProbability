@@ -7,6 +7,7 @@ from pickColor import *
 from linkTables import *
 from drawShapes import *
 from getAttributes import *
+import time
 
 
 def makeImage(name, sheet, firstind):
@@ -65,6 +66,7 @@ def makeImage(name, sheet, firstind):
     return
 
 
+start = time.time()
 for simulname in ['Guardrail', 'MedianStrip', 'RoadsideTree','OverCenterline']:
     excelfile = pd.ExcelFile('simulation_results/' + simulname + '_injury_analysis.xlsx')
     sheetnames = excelfile.sheet_names
@@ -76,4 +78,5 @@ for simulname in ['Guardrail', 'MedianStrip', 'RoadsideTree','OverCenterline']:
     for sheetname in sheetnames:
         makeImage(simulname, sheetname,first)
         print("Finished image for " + sheetname)
-
+end = time.time()
+print("Elasped Time: " + str(end-start))
