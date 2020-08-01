@@ -1,10 +1,32 @@
+# Allen Lang
+# Updated: August 2020
+# https://github.com/alang24/Injury-Visualization
+
 
 def chooseMax(threeT):
+    """
+    chooseMax is a helper function to getName, takes in a DataFrame of 2 or 3 rows and returns the name of the one
+    that has the highest probability.
+
+    :param threeT: DataFrame of 2 or 3 bodyparts
+    :return: Name of bodypart of highest probability
+    """
     sorted = threeT.sort_values(by='Prob', ascending=False)
     return sorted.iloc[0].Name
 
 
 def getName(row, simData, case):
+    """
+    getName is applied across the coord DataFrame, which has all possible bodyparts. It will find said bodypart in the
+    simulationresults DataFrame. If it does not, then that case doesn't have that bodypart, and a "not found" name will
+    be returned. It takes in case number to sift through the multiple exception cases, taking advantage of the Regex
+    built into the pandas str functions.
+
+    :param row: a row in the DataFrame, circle or ellipse
+    :param simData: simulation Data with results, need it for the more scientific body part name
+    :param case: four possible cases lead to four possible sets of bodyparts that need to be drawn
+    :return: the proper name of the property that should be used
+    """
     bodypart = row['BodyPart']
 
     if bodypart == 'Head':
@@ -42,10 +64,18 @@ def getName(row, simData, case):
         if not foundAny.any():
             return "Not Found"
         newname = simData[foundAny].iloc[0].Name
+
     return newname
 
 
 def getProb(row,simData):
+    """
+    getProb follows after getName, extracting the Prob by looking back into simData for that exact name
+
+    :param row: bodypart either from ellipse or circle DataFrame
+    :param simData: simulation data that contains probabilities
+    :return: the probability as a percentage
+    """
     bodypart = row['NewName']
 
     if bodypart == 'Not Found':
