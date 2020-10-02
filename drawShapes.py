@@ -64,8 +64,6 @@ def drawEllipse(row, drawer):
     return
 
 
-
-
 def getTop5(circ, ell):
     """
     getTopFive is a helper function to drawTop5. It extracts the name and probability columns from both circle and

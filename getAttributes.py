@@ -32,7 +32,7 @@ def getAttributes(name, sheet, firstind, simData):
     """
     Gets information necessary for naming/saving the image
 
-    Image: name of image file to be used
+    Image: name of image file to be used (driver or passenger)
     Person: Driver or passenger
     Index: Sheet number within the spreadsheet
     Carnum: Car number (OverCenterline only)
@@ -46,10 +46,12 @@ def getAttributes(name, sheet, firstind, simData):
     """
     a = {}
 
+    # Default assumption that person is a Driver, and no Second Car
     image = 'ciss_human_driver_legend_CAB.jpg'
     person = 'Driver'
     carNum = '-1'
 
+    # Special cases for Guardrail (has only driver) and OverCenterline (has two cars)
     if name == 'Guardrail':
         index = sheet
     elif name == 'OverCenterline':

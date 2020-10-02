@@ -30,8 +30,8 @@ def makeImage(name, sheet, firstind):
     """
 
     # 1
-    coordCirc = pd.read_excel('coord.xlsx',sheet_name=0)
-    coordEll = pd.read_excel('coord.xlsx',sheet_name=1)
+    coordCirc = pd.read_excel('coord.xlsx', sheet_name=0)
+    coordEll = pd.read_excel('coord.xlsx', sheet_name=1)
 
     # 2
     simData = pd.read_excel('simulation_results/' + name + '_injury_analysis.xlsx', sheet_name=sheet, header=None,
@@ -67,16 +67,32 @@ def makeImage(name, sheet, firstind):
 
 
 start = time.time()
-for simulname in ['Guardrail', 'MedianStrip', 'RoadsideTree','OverCenterline']:
+for simulname in ['Task5']:
     excelfile = pd.ExcelFile('simulation_results/' + simulname + '_injury_analysis.xlsx')
     sheetnames = excelfile.sheet_names
 
-    first = '0'
     if simulname == 'OverCenterline':
         first = int(sheetnames[0][:-1])
+    else:
+        first = '0'
 
     for sheetname in sheetnames:
         makeImage(simulname, sheetname,first)
         print("Finished image for " + sheetname)
+
+# code for running the original 4: guardrail,medianstrip,roadsidetree,overcenterline
+# for simulname in ['Guardrail', 'MedianStrip', 'RoadsideTree','OverCenterline']:
+#     excelfile = pd.ExcelFile('simulation_results/' + simulname + '_injury_analysis.xlsx')
+#     sheetnames = excelfile.sheet_names
+#
+#     if simulname == 'OverCenterline':
+#         first = int(sheetnames[0][:-1])
+#     else:
+#         first = '0'
+#
+#     for sheetname in sheetnames:
+#         makeImage(simulname, sheetname,first)
+#         print("Finished image for " + sheetname)
+
 end = time.time()
 print("Elasped Time: " + str(end-start))
