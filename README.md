@@ -6,8 +6,8 @@ While at the Center for Applied Biomechanics, I had written a MATLAB script that
 - Python runtime: 12.3 seconds
 
 **Projects**
--HMC 2019
--HMC 2020
+- HMC 2019
+- HMC 2020
 
 
 **Dependencies:**
