@@ -1,5 +1,5 @@
 # Allen Lang
-# Updated: August 2020
+# Updated: October 2020
 # https://github.com/alang24/Injury-Visualization
 
 
@@ -24,7 +24,7 @@ def getName(row, simData, case):
 
     :param row: a row in the DataFrame, circle or ellipse
     :param simData: simulation Data with results, need it for the more scientific body part name
-    :param case: four possible cases lead to four possible sets of bodyparts that need to be drawn
+    :param OccNum: four possible values map to four distinct sets of bodyparts properties that need to be drawn
     :return: the proper name of the property that should be used
     """
     bodypart = row['BodyPart']

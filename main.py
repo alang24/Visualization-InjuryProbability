@@ -1,5 +1,5 @@
 # Allen Lang
-# Updated: August 2020
+# Updated: October 2020
 # https://github.com/alang24/Injury-Visualization
 
 from PIL import Image, ImageDraw
@@ -8,9 +8,10 @@ from linkTables import *
 from drawShapes import *
 from getAttributes import *
 import time
+import os
 
 
-def makeImage(name, sheet, firstind):
+def makeImage(proj, test_type, sheet, car_name, single_occ):
     """
     Produces an Image for a particular sheet (simulation)
     1. Import circle/ellipse coord and create DataFrame
@@ -23,9 +24,11 @@ def makeImage(name, sheet, firstind):
     8. Place title on top right corner
     9. Save image using attributes from step 3
 
-    :param name: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
+    :param proj: HMC 2019 or HMC 2020
+    :param test_type: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
     :param sheet: sheet name in spreadsheet
-    :param firstind: for OverCenterline index calculation
+    :param car_name: Car model
+    :param single_occ: Is this simulation only have one occupent in car
     :return: nothing
     """
 
@@ -34,18 +37,18 @@ def makeImage(name, sheet, firstind):
     coordEll = pd.read_excel('coord.xlsx', sheet_name=1)
 
     # 2
-    simData = pd.read_excel('simulation_results/' + name + '_injury_analysis.xlsx', sheet_name=sheet, header=None,
-                            names=['Name', 'Fill', 'Prob'])
+    simData = pd.read_excel('simulation_results/' + proj +'/' + test_type + '_injury_analysis.xlsx', sheet_name=sheet,
+                            header=None, names=['Name', 'Fill', 'Prob'])
 
     # 3
-    attr = getAttributes(name, sheet, firstind, simData)
+    attr = getAttributes(test_type, sheet, car_name, simData)
 
     # 4/5
-    coordCirc['NewName'] = coordCirc.apply(getName, axis=1, args=(simData, attr['Case']))
+    coordCirc['NewName'] = coordCirc.apply(getName, axis=1, args=(simData, attr['OccNum']))
     coordCirc['Prob'] = coordCirc.apply(getProb, axis=1, args=(simData,))
     coordCirc['Color'] = coordCirc.apply(colorPicker, axis=1)
 
-    coordEll['NewName'] = coordEll.apply(getName, axis=1, args=(simData, attr['Case']))
+    coordEll['NewName'] = coordEll.apply(getName, axis=1, args=(simData, attr['OccNum']))
     coordEll['Prob'] = coordEll.apply(getProb, axis=1, args=(simData,))
     coordEll['Color'] = coordEll.apply(colorPicker, axis=1)
 
@@ -57,42 +60,39 @@ def makeImage(name, sheet, firstind):
 
         drawTop5(drawer, coordCirc, coordEll)
 
-        if name == 'OverCenterline':
-            drawTitle(name, attr, im.size, drawer)
-            im.save('images/' + name + '_' + attr['Index'] + '_' + attr['CarNum'] + '_' + attr['Person'] + '.jpg')
+        if attr['TestType'] == 'OverCenterline':
+            drawTitle(attr, im.size, drawer)
+            im.save('images/' + proj + '/' + car_name + '_' + attr['TestType'] + '_' + attr['Index'] + '_'
+                    + attr['CarNum'] + '_' + attr['Person'] + '.jpg')
         else:
-            drawTitle(name, attr, im.size, drawer)
-            im.save('images/' + name + '_' + attr['Index'] + '_' + attr['Person'] + '.jpg')
+            drawTitle(attr, im.size, drawer)
+            im.save('images/' + proj + '/' + car_name + '_' + attr['TestType'] + '_' + attr['Index'] + '_'
+                    + attr['Person'] + '.jpg')
     return
 
 
+def main():
+    """
+    Wrapper function for image generation process
+
+    :return: nothing
+    """
+    project ='HMC_2019'
+    simulations = os.listdir('simulation_results/' + project)
+
+    for simul_name in simulations:
+        print(simul_name)
+        excelfile = pd.ExcelFile('simulation_results/' + project + '/' + simul_name)
+        sheet_names = excelfile.sheet_names
+        car = 'AD'
+        cut = simul_name.find('_injury_analysis.xlsx')
+
+        for sheetname in sheet_names:
+            makeImage(project, simul_name[:cut], sheetname, car, False)
+            print("Finished image for " + sheetname)
+
+
 start = time.time()
-for simulname in ['Task5']:
-    excelfile = pd.ExcelFile('simulation_results/' + simulname + '_injury_analysis.xlsx')
-    sheetnames = excelfile.sheet_names
-
-    if simulname == 'OverCenterline':
-        first = int(sheetnames[0][:-1])
-    else:
-        first = '0'
-
-    for sheetname in sheetnames:
-        makeImage(simulname, sheetname,first)
-        print("Finished image for " + sheetname)
-
-# code for running the original 4: guardrail,medianstrip,roadsidetree,overcenterline
-# for simulname in ['Guardrail', 'MedianStrip', 'RoadsideTree','OverCenterline']:
-#     excelfile = pd.ExcelFile('simulation_results/' + simulname + '_injury_analysis.xlsx')
-#     sheetnames = excelfile.sheet_names
-#
-#     if simulname == 'OverCenterline':
-#         first = int(sheetnames[0][:-1])
-#     else:
-#         first = '0'
-#
-#     for sheetname in sheetnames:
-#         makeImage(simulname, sheetname,first)
-#         print("Finished image for " + sheetname)
-
+main()
 end = time.time()
-print("Elasped Time: " + str(end-start))
+print("Elapsed Time: " + str(end-start))

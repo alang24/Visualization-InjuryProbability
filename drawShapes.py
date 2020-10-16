@@ -1,5 +1,5 @@
 # Allen Lang
-# Updated: August 2020
+# Updated: October 2020
 # https://github.com/alang24/Injury-Visualization
 
 import numpy as np
@@ -107,30 +107,34 @@ def drawTop5(drawer, circle, ellipse):
     return
 
 
-def drawTitle(name, a, size, drawer):
+def drawTitle(a, size, drawer):
     """
     drawTitle creates the title based on information about the particular crash type
 
-    :param name: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
     :param a: dictionary of attributes (see getAttributes)
     :param size: size of image
     :param drawer: ImageDraw object
 
     :return: nothing
     """
-    fnt = ImageFont.truetype('fonts/Roboto-Regular.ttf', 36)
+    fnt1 = ImageFont.truetype('fonts/Roboto-Regular.ttf', 34)
     W, H = size
-    title1 = name + ' ' + a['Index']
-    w1, h1 = drawer.textsize(title1, font=fnt)
+    title1 = a['CarName'] + ' ' + a['TestType'] + ' ' + a['Index']
+    w1, h1 = drawer.textsize(title1, font=fnt1)
 
-    if name == 'OverCenterline':
+    if a['TestType'] == 'OverCenterline':
         title2 = a['Person'] + ' Car #' + a['CarNum']
     else:
         title2 = a['Person']
 
-    w2,h2 = drawer.textsize(title2, font=fnt)
+    w2,h2 = drawer.textsize(title2, font=fnt1)
 
-    drawer.text((W - w1 - 20, 20), title1, font=fnt, fill=(0, 0, 0))
-    drawer.text((W - w2 - 20, 80), title2, font=fnt, fill=(0, 0, 0))
+    drawer.text((W - w1 - 20, 20), title1, font=fnt1, fill=(0, 0, 0))
+    drawer.text((W - w2 - 20, 80), title2, font=fnt1, fill=(0, 0, 0))
 
+    fnt2 = ImageFont.truetype('fonts/Roboto-Regular.ttf', 22)
+
+    title3 = "Occupant Model: " + a['OccName']
+    w3,h3 = drawer.textsize(title3, font=fnt2)
+    drawer.text((20, H - h3 - 50), title3, font=fnt2, fill=(0, 0, 0))
     return

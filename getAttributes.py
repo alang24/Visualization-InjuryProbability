@@ -1,46 +1,54 @@
 # Allen Lang
-# Updated: August 2020
+# Updated: October 2020
 # https://github.com/alang24/Injury-Visualization
 
 
-def getCase(simData):
+def getOccupantModel(simData, attr):
     """
-    Helper function to get case number
+    Helper function to get occupant model
 
     :param simData: simulation data
     :return: case number, refer to simulation_matrix for specifics
     """
-
     numrows = simData.shape[0]
 
-    case = 0
     if numrows == 52:
-        case = 1
+        attr['OccName'] = 'H3'
+        attr['OccNum'] = 1
+
     elif numrows == 63:
-        case = 2
+        attr['OccName'] = 'THOR'
+        attr['OccNum'] = 2
+
     elif numrows == 83:
-        case = 3
+        attr['OccName'] = 'M50-OS'
+        attr['OccNum'] = 3
+
     elif numrows == 111:
-        case = 4
+        attr['OccName'] = 'M50-O'
+        attr['OccNum'] = 4
+
     else:
         print("Incorrect number of rows. Something has changed with the table.")
         exit(1)
-    return case
+    return attr
 
 
-def getAttributes(name, sheet, firstind, simData):
+def getAttributes(test_type, sheet, carName, simData):
     """
     Gets information necessary for naming/saving the image
 
     Image: name of image file to be used (driver or passenger)
     Person: Driver or passenger
     Index: Sheet number within the spreadsheet
+    CarName: model of car used
     Carnum: Car number (OverCenterline only)
-    Case: needed to link tables
+    OccName: name of occupant dummy model
+    OccNum: needed to link tables, value mapped from occupant name
 
-    :param name: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
+    :param test_type: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
     :param sheet: sheet name in spreadsheet
-    :param firstind: for OverCenterline index calculation
+    :param carName: model of the car used
     :param simData: simData to count number of rows
     :return:
     """
@@ -52,34 +60,26 @@ def getAttributes(name, sheet, firstind, simData):
     carNum = '-1'
 
     # Special cases for Guardrail (has only driver) and OverCenterline (has two cars)
-    if name == 'Guardrail':
+    if test_type == 'Guardrail':
         index = sheet
-    elif name == 'OverCenterline':
-        temp = int(sheet[:-1]) - firstind + 1
-        if temp % 2 == 0:
-            temp = temp - 1
-        if temp > 8:
-            index = str(temp % 8//2+1+4)
-        else:
-            index = str(temp % 8//2+1)
-
+    elif test_type == 'OverCenterline':
         if int(sheet[:-1]) % 2 == 0:
             carNum = '2'
         else:
             carNum = '1'
+        index = sheet[:-1]
     else:
-        if int(sheet[:-1]) % 8 == 0:
-            index = '8'
-        else:
-            index = str(int(sheet[:-1]) % 8)
+        index = sheet[:-1]
 
     if sheet[-1] == 'P':
         image = 'ciss_human_passenger_legend_CAB.jpg'
         person = 'Passenger'
 
+    a['TestType'] = test_type
     a['Image'] = image
     a['Person'] = person
     a['Index'] = index
+    a['CarName'] = carName
     a['CarNum'] = carNum
-    a['Case'] = getCase(simData)
+    a = getOccupantModel(simData, a)
     return a
