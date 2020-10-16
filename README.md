@@ -5,6 +5,11 @@ While at the Center for Applied Biomechanics, I had written a MATLAB script that
 - MATLAB runtime: 76.5 seconds
 - Python runtime: 12.3 seconds
 
+**Projects**
+-HMC 2019
+-HMC 2020
+
+
 **Dependencies:**
 - PANDAS library: https://pypi.org/project/pandas/
 - Pillow: https://pypi.org/project/Pillow/
@@ -16,3 +21,4 @@ While at the Center for Applied Biomechanics, I had written a MATLAB script that
 - 7/31: processes the different cases (guardrail,medstrip,etc.). for each case, able to loop through all the sheets and create an image, verified correctness <br />
 - 8/1: Verified correctness of entire script. Added function documentation. Added helper functions to clean up the main.py file.
 - 10/2: New simulations (task 5) that are similar to RoadsideTree
+- 10/16: Added car models to image names, restructured directories, cleaned code, fixed an error regarding OverCenterline
