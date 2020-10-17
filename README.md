@@ -22,3 +22,5 @@ While at the Center for Applied Biomechanics, I had written a MATLAB script that
 - 8/1: Verified correctness of entire script. Added function documentation. Added helper functions to clean up the main.py file.
 - 10/2: New simulations (task 5) that are similar to RoadsideTree
 - 10/16: Added car models to image names, restructured directories, cleaned code, fixed an error regarding OverCenterline
+
+Things to do: prepare for hmc2020, document more/clean it up more
