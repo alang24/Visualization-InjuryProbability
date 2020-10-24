@@ -5,7 +5,13 @@
 
 def getOccupantModel(simData, attr):
     """
-    Helper function to get occupant model
+    Helper function to get occupant model, there exist four options:
+    1) H-III: least number of body parts (head, neck, thorax, abdomen, legs)
+    2) THOR: adds ankle and acetabulum, thorax given conditional
+    3) GHBMC-OS: same as THOR, but no acetabulum
+    4) GHBMC-O: most comprehensive, almost double parameter number of H-III
+
+    All are unbelted
 
     :param simData: simulation data
     :return: case number, refer to simulation_matrix for specifics
@@ -36,15 +42,15 @@ def getOccupantModel(simData, attr):
 
 def getAttributes(test_type, sheet, carName, simData):
     """
-    Gets information necessary for naming/saving the image
+    Gets information necessary for uniquely naming/saving the image
 
     Image: name of image file to be used (driver or passenger)
     Person: Driver or passenger
-    Index: Sheet number within the spreadsheet
+    Index: Sheet number within the spreadsheet, maps directly to simulation matrix
     CarName: model of car used
-    Carnum: Car number (OverCenterline only)
-    OccName: name of occupant dummy model
-    OccNum: needed to link tables, value mapped from occupant name
+    carNum: Car number (OverCenterline only)
+    OccName: name of occupant dummy model, getOccupantModel()
+    OccNum: needed to link tables, value mapped from occupant name, getOccupantModel()
 
     :param test_type: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
     :param sheet: sheet name in spreadsheet

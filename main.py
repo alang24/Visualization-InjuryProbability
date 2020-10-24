@@ -28,7 +28,7 @@ def makeImage(proj, test_type, sheet, car_name, single_occ):
     :param test_type: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
     :param sheet: sheet name in spreadsheet
     :param car_name: Car model
-    :param single_occ: Is this simulation only have one occupent in car
+    :param single_occ: Is this simulation only have one occupant in car
     :return: nothing
     """
 
@@ -38,7 +38,7 @@ def makeImage(proj, test_type, sheet, car_name, single_occ):
 
     # 2
     simData = pd.read_excel('simulation_results/' + proj +'/' + test_type + '_injury_analysis.xlsx', sheet_name=sheet,
-                            header=None, names=['Name', 'Fill', 'Prob'])
+                            header=None, names=['Name', 'Metric', 'Prob'])
 
     # 3
     attr = getAttributes(test_type, sheet, car_name, simData)
@@ -71,28 +71,34 @@ def makeImage(proj, test_type, sheet, car_name, single_occ):
     return
 
 
-def main():
+def main(c):
     """
     Wrapper function for image generation process
 
+    :param c: counter used for overhead
     :return: nothing
     """
-    project ='HMC_2019'
+    project ='HMC_2020'
     simulations = os.listdir('simulation_results/' + project)
 
     for simul_name in simulations:
-        print(simul_name)
+        print("Making images for", simul_name.split('.')[0])
         excelfile = pd.ExcelFile('simulation_results/' + project + '/' + simul_name)
         sheet_names = excelfile.sheet_names
-        car = 'AD'
+        car = 'CN7'
         cut = simul_name.find('_injury_analysis.xlsx')
 
         for sheetname in sheet_names:
             makeImage(project, simul_name[:cut], sheetname, car, False)
+            c += 1
             print("Finished image for " + sheetname)
+        print()
+    return c
 
 
+c = 0
 start = time.time()
-main()
+c = main(c)
 end = time.time()
-print("Elapsed Time: " + str(end-start))
+print("Total Elapsed Time: " + str(end-start))
+print("Average Time per image: ", str((end-start)/c))

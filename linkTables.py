@@ -28,9 +28,11 @@ def getName(row, simData, case):
     :return: the proper name of the property that should be used
     """
     bodypart = row['BodyPart']
-
-    if bodypart == 'Head':
-        one = simData[simData.Name.str.contains('(?:HIC36|BrIC MPS) \(AIS 2\+\)')]
+    if bodypart == 'Head BrIC':
+        one = simData[simData.Name.str.contains('(?:BrIC MPS) \(AIS 2\+\)')]
+        newname = chooseMax(one)
+    elif bodypart == 'Head HIC':
+        one = simData[simData.Name.str.contains('(?:HIC36) \(AIS 2\+\)')]
         newname = chooseMax(one)
     elif bodypart == 'Thorax' and case >= 2:
         one = simData[simData.Name.str.contains('Thorax (?:Rmax|PCA) \(AIS 3\+\)')]
