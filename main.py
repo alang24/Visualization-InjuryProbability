@@ -78,14 +78,14 @@ def main(c):
     :param c: counter used for overhead
     :return: nothing
     """
-    project ='HMC_2020'
+    project ='HMC_2019'
     simulations = os.listdir('simulation_results/' + project)
 
     for simul_name in simulations:
         print("Making images for", simul_name.split('.')[0])
         excelfile = pd.ExcelFile('simulation_results/' + project + '/' + simul_name)
         sheet_names = excelfile.sheet_names
-        car = 'CN7'
+        car = 'AD'
         cut = simul_name.find('_injury_analysis.xlsx')
 
         for sheetname in sheet_names:
