@@ -23,5 +23,6 @@ While at the Center for Applied Biomechanics, I had written a MATLAB script that
 - 10/2: New simulations (task 5) that are similar to RoadsideTree
 - 10/16: Added car models to image names, restructured directories, cleaned code, fixed an error regarding OverCenterline
 - 10/23: Separated head metrics into two (BrIC MPS and HIC36), added documentation, ran on 2020 results that finished so far
+- 11/4: adjusted head metrics shape, re-ran on all
 
 Things to do: wait for more of those results, potentially add more information on bottom left of image?
