@@ -25,4 +25,5 @@ While at the Center for Applied Biomechanics, I had written a MATLAB script that
 - 10/23: Separated head metrics into two (BrIC MPS and HIC36), added documentation, ran on 2020 results that finished so far
 - 11/4: adjusted head metrics shape, re-ran on all
 - 11/7: Ran on new simulation results
+
 Things to do: wait for more of those results, potentially add more information on bottom left of image?
