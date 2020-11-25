@@ -37,11 +37,15 @@ def makeImage(proj, test_type, sheet, car_name, single_occ):
     coordEll = pd.read_excel('coord.xlsx', sheet_name=1)
 
     # 2
-    simData = pd.read_excel('simulation_results/' + proj +'/' + test_type + '_injury_analysis.xlsx', sheet_name=sheet,
-                            header=None, names=['Name', 'Metric', 'Prob'])
+    if test_type == 'OverCenterline':
+        simData = pd.read_excel('simulation_results/' + proj + '/' + car_name + ' ' + test_type + ' V' + single_occ + '_Injury_Analysis.xlsx',
+                                sheet_name=sheet, header=None, names=['Name', 'Metric', 'Prob'])
+    else:
+        simData = pd.read_excel('simulation_results/' + proj + '/' + car_name + ' ' + test_type + '_Injury_Analysis.xlsx',
+                                sheet_name=sheet, header=None, names=['Name', 'Metric', 'Prob'])
 
     # 3
-    attr = getAttributes(test_type, sheet, car_name, simData)
+    attr = getAttributes(test_type, sheet, car_name, single_occ, simData)
 
     # 4/5
     coordCirc['NewName'] = coordCirc.apply(getName, axis=1, args=(simData, attr['OccNum']))
@@ -82,14 +86,24 @@ def main(c):
     simulations = os.listdir('simulation_results/' + project)
 
     for simul_name in simulations:
+        # Gets list of sheetnames from Excel Spreadsheet
         print("Making images for", simul_name.split('.')[0])
         excelfile = pd.ExcelFile('simulation_results/' + project + '/' + simul_name)
         sheet_names = excelfile.sheet_names
-        car = 'CN7'
-        cut = simul_name.find('_injury_analysis.xlsx')
+        print(sheet_names)
 
+        # All spreadsheets have format "carname simulationname_injury_analysis.xlsx"
+        # So variables are made to get the car name and simulation name
+        fullname = simul_name[:simul_name.find('_Injury_Analysis.xlsx')].split(' ')
+
+        name = fullname[1]
+        car = fullname[0]
+        # Go through Excel sheet in spreadsheet and make an image
         for sheetname in sheet_names:
-            makeImage(project, simul_name[:cut], sheetname, car, False)
+            if name == 'OverCenterline':
+                makeImage(project, name, sheetname, car, fullname[2][-1])
+            else:
+                makeImage(project, name, sheetname, car, '')
             c += 1
             print("Finished image for " + sheetname)
         print()

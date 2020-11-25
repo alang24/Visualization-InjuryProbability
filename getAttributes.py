@@ -40,7 +40,7 @@ def getOccupantModel(simData, attr):
     return attr
 
 
-def getAttributes(test_type, sheet, carName, simData):
+def getAttributes(test_type, sheet, carName, carnum, simData):
     """
     Gets information necessary for uniquely naming/saving the image
 
@@ -55,6 +55,7 @@ def getAttributes(test_type, sheet, carName, simData):
     :param test_type: crash type (Guardrail, MedianStrip, OverCenterline, RoadsideTree)
     :param sheet: sheet name in spreadsheet
     :param carName: model of the car used
+    :param carName: car number (OverCenterline only)
     :param simData: simData to count number of rows
     :return:
     """
@@ -69,10 +70,7 @@ def getAttributes(test_type, sheet, carName, simData):
     if test_type == 'Guardrail':
         index = sheet
     elif test_type == 'OverCenterline':
-        if int(sheet[:-1]) % 2 == 0:
-            carNum = '2'
-        else:
-            carNum = '1'
+        carNum = carnum
         index = sheet[:-1]
     else:
         index = sheet[:-1]
