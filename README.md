@@ -1,5 +1,5 @@
-# Injury-Visualization
-While at the Center for Applied Biomechanics, I had written a MATLAB script that produced injury visualizations on the human body for various FEA crash simulations. The script was slow and felt hard-coded, and I wanted to adapt the script using Python. The result was that I was able to familiarize myself with Pandas, numpy, and Pillow while creating a faster and easier to use alternative. 
+# Visualization of Crash Simulation Injury Probabilities
+While at the Center for Applied Biomechanics, I had written a MATLAB script that produced injury visualizations on the human body for various FEA crash simulations scenarios. Since the script was slow, poorly structured, and difficult to use, I wanted to adapt the script using Python. This project allowed me to familiarize myself with Pandas, numpy, and Pillow while creating a faster and easier to use alternative. 
 
 **Performance comparison:**
 - MATLAB runtime: 1.0625 seconds per image
@@ -26,5 +26,6 @@ While at the Center for Applied Biomechanics, I had written a MATLAB script that
 - 11/4: adjusted head metrics shape, re-ran on all
 - 11/7: Ran on new simulation results
 - 11/11: Bug fixes, maxilla and nasal originally in wrong place
+- 11/25: New simulation results, separated OverCenterline case, script now reads car names directly from file name
 
 Things to do: wait for more of those results, potentially add more information on bottom left of image?
