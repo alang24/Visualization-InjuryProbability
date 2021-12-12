@@ -1,3 +1,5 @@
 .idea/
 __pycache__/
 __pycache__/colorPicker.cpython-38.pyc
+images/
+simulation_results

@@ -40,7 +40,7 @@ def getOccupantModel(simData, attr):
     return attr
 
 
-def getAttributes(test_type, sheet, carName, carnum, simData):
+def getAttributes(test_type, sheet, carName, carnum, simData, year):
     """
     Gets information necessary for uniquely naming/saving the image
 
@@ -57,6 +57,7 @@ def getAttributes(test_type, sheet, carName, carnum, simData):
     :param carName: model of the car used
     :param carName: car number (OverCenterline only)
     :param simData: simData to count number of rows
+    :param year: HMC Project of 2019 or 2020
     :return:
     """
     a = {}
@@ -66,8 +67,8 @@ def getAttributes(test_type, sheet, carName, carnum, simData):
     person = 'Driver'
     carNum = '-1'
 
-    # Special cases for Guardrail (has only driver) and OverCenterline (has two cars)
-    if test_type == 'Guardrail':
+    # Special cases for Guardrail (has only driver for 2019 case) and OverCenterline (has two cars)
+    if test_type == 'Guardrail' and year == '2019':
         index = sheet
     elif test_type == 'OverCenterline':
         carNum = carnum

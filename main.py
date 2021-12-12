@@ -11,7 +11,7 @@ import time
 import os
 
 
-def makeImage(proj, test_type, sheet, car_name, single_occ):
+def makeImage(proj, test_type, sheet, car_name, single_occ, year):
     """
     Produces an Image for a particular sheet (simulation)
     1. Import circle/ellipse coord and create DataFrame
@@ -29,6 +29,7 @@ def makeImage(proj, test_type, sheet, car_name, single_occ):
     :param sheet: sheet name in spreadsheet
     :param car_name: Car model
     :param single_occ: Is this simulation only have one occupant in car
+    :param year: HMC Project of 2019 or 2020
     :return: nothing
     """
 
@@ -45,7 +46,7 @@ def makeImage(proj, test_type, sheet, car_name, single_occ):
                                 sheet_name=sheet, header=None, names=['Name', 'Metric', 'Prob'])
 
     # 3
-    attr = getAttributes(test_type, sheet, car_name, single_occ, simData)
+    attr = getAttributes(test_type, sheet, car_name, single_occ, simData, year)
 
     # 4/5
     coordCirc['NewName'] = coordCirc.apply(getName, axis=1, args=(simData, attr['OccNum']))
@@ -85,7 +86,7 @@ def main(c):
     project ='HMC_2020'
     simulations = os.listdir('simulation_results/' + project)
 
-    for simul_name in simulations:
+    for simul_name in ['CN7 Guardrail_Injury_Analysis.xlsx']:#simulations:
         # Gets list of sheetnames from Excel Spreadsheet
         print("Making images for", simul_name.split('.')[0])
         excelfile = pd.ExcelFile('simulation_results/' + project + '/' + simul_name)
@@ -101,9 +102,9 @@ def main(c):
         # Go through Excel sheet in spreadsheet and make an image
         for sheetname in sheet_names:
             if name == 'OverCenterline':
-                makeImage(project, name, sheetname, car, fullname[2][-1])
+                makeImage(project, name, sheetname, car, fullname[2][-1],project[-4:])
             else:
-                makeImage(project, name, sheetname, car, '')
+                makeImage(project, name, sheetname, car, '',project[-4:])
             c += 1
             print("Finished image for " + sheetname)
         print()
